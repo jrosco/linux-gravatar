@@ -34,6 +34,7 @@ class Gravatar(threading.Thread):
 
         print 'save_image(image)'
         self.get_user_home_image()
+
         f = open(self.local_img, 'wb')
         f.write(image)
         f.close()
@@ -41,6 +42,7 @@ class Gravatar(threading.Thread):
     def get_user_home_image(self):
 
         print 'get_user_home_image()'
+        #self.local_img= '/var/lib/AccountsService/icons/jrosco'
         home_path = os.path.expanduser('~')
         self.local_img = home_path + '/.face'
 
@@ -57,11 +59,15 @@ class Gravatar(threading.Thread):
             self.get_url_image(self.email_addr)
             self.get_user_home_image()
 
-            image_file = open(self.local_img, 'r')
-            md5_image1 = hashlib.md5(image_file.read()).hexdigest()
-            md5_image2 = hashlib.md5(self.remote_img).hexdigest()
-
-            print md5_image1 + ' : ' + md5_image2
+            if os.path.isfile(self.local_img):
+                image_file = open(self.local_img, 'r')
+                md5_image1 = hashlib.md5(image_file.read()).hexdigest()
+                md5_image2 = hashlib.md5(self.remote_img).hexdigest()
+                print md5_image1 + ' : ' + md5_image2
+            else:
+                f = open(self.local_img, 'a')
+                f.write(self.remote_img)
+                f.close()
 
             if str(md5_image1) != str(md5_image2):
                 print 'save image to hdd'
