@@ -3,42 +3,69 @@
 import gobject
 import gtk
 import appindicator
+import src.gravatar
 
 
-def menu_settings(item):
+class StartTrayIcon():
 
-    print 'Settings %s' % item
-    filename = '../gui/settings_win.glade'
-    builder = gtk.Builder()
-    builder.add_from_file(filename)
+    def __init__(self):
 
+        self.gobj = 0
+        self.gravatar = src.gravatar.Gravatar()
+        self.settings_window = gtk.Window(gtk.WINDOW_TOPLEVEL)
+        self.settings_box = gtk.HBox(False, 0)
+        self.email_value = gtk.Entry()
 
-def close_app(item):
+    def gravatar_object(self):
 
-    print 'Close %s' % item
-    gtk.main_quit()
+        self.gobj = gobject.timeout_add(0, self.start_gravatar)
 
-if __name__ == "__main__":
-    ind = appindicator.Indicator("linux-gravatar",
-                                 "indicator-messages",
-                                 appindicator.CATEGORY_APPLICATION_STATUS)
-    ind.set_status(appindicator.STATUS_ACTIVE)
-    icon = '../media/gravatar.png'
-    ind.set_icon(icon)
+    def start_gravatar(self):
 
-    # create a menu
-    menu = gtk.Menu()
+        self.gravatar.setDaemon(True)
+        self.gravatar.start()
 
-    menu_items = gtk.MenuItem('Settings')
-    menu.append(menu_items)
-    menu_items.connect('activate', menu_settings)
-    menu_items.show()
+    def menu_settings(self, item):
 
-    menu_items = gtk.MenuItem('Close')
-    menu.append(menu_items)
-    menu_items.connect('activate', close_app)
-    menu_items.show()
+        print 'Settings %s' % item
+        self.settings_window.set_title("Settings")
+        self.settings_window.set_size_request(400, 200)
+        self.settings_window.add(self.settings_box)
+        self.settings_box.pack_start(self.email_value, True, True, 0)
+        self.email_value.show()
+        self.settings_window.show()
 
-    ind.set_menu(menu)
+    def close_app(self, item):
 
-    gtk.main()
+        print 'Close %s' % item
+        gtk.main_quit()
+
+    def run(self):
+
+        gobject.threads_init()
+
+        ind = appindicator.Indicator("linux-gravatar",
+                                     "indicator-messages",
+                                     appindicator.CATEGORY_APPLICATION_STATUS)
+        ind.set_status(appindicator.STATUS_ACTIVE)
+        icon = '../media/gravatar.png'
+        ind.set_icon(icon)
+
+        # create a menu
+        menu = gtk.Menu()
+
+        menu_items = gtk.MenuItem('Settings')
+        menu.append(menu_items)
+        menu_items.connect('activate', self.menu_settings)
+        menu_items.show()
+
+        menu_items = gtk.MenuItem('Close')
+        menu.append(menu_items)
+        menu_items.connect('activate', self.close_app)
+        menu_items.show()
+
+        ind.set_menu(menu)
+
+        self.gravatar_object()
+
+        gtk.main()

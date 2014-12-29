@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
-import gtk
 import gobject
-import gtk.glade
+import gtk
+import appindicator
 import gravatar
 
 
@@ -15,6 +15,7 @@ class StartTrayIcon():
         self.settings_window = gtk.Window(gtk.WINDOW_TOPLEVEL)
         self.settings_box = gtk.HBox(False, 0)
         self.email_value = gtk.Entry()
+        self.icon = '../media/gravatar.png'
 
     def gravatar_object(self):
 
@@ -25,64 +26,46 @@ class StartTrayIcon():
         self.gravatar.setDaemon(True)
         self.gravatar.start()
 
-    @staticmethod
-    def message(data=None):
-        """ Function to display messages to the user."""
+    def menu_settings(self, item):
 
-        msg = gtk.MessageDialog(None, gtk.DIALOG_MODAL,
-                                gtk.MESSAGE_INFO, gtk.BUTTONS_OK, data)
-        msg.run()
-        msg.destroy()
+        print 'Settings %s' % item
+        self.settings_window.set_title("Settings")
+        self.settings_window.set_size_request(400, 200)
+        self.settings_window.add(self.settings_box)
+        self.settings_box.pack_start(self.email_value, True, True, 0)
+        self.email_value.show()
+        self.settings_window.show()
 
-    def settings(self):
+    def close_app(self, item):
 
-        filename = '../gui/settings_win.glade'
-        builder = gtk.Builder()
-        builder.add_from_file(filename)
-        #builder.connect_signals(self)
-        # self.settings_window.set_title("Settings")
-        # self.settings_window.set_size_request(400, 200)
-        # self.settings_window.add(self.settings_box)
-        # self.settings_box.pack_start(self.email_value, True, True, 0)
-        # self.email_value.show()
-        # self.settings_window.show()
-
-    def open_app(self, data=None):
-
-        #self.message(data)
-        self.settings()
-
-    def close_app(self, data=None):
-
+        print 'Close %s' % item
         gtk.main_quit()
-
-    def make_menu(self, event_button, event_time, data=None):
-
-        menu = gtk.Menu()
-        open_item = gtk.MenuItem("Settings")
-        close_item = gtk.MenuItem("Close")
-
-        # Append the menu items
-        menu.append(open_item)
-        menu.append(close_item)
-        # add callbacks
-        open_item.connect_object("activate", self.open_app, "Settings")
-        close_item.connect_object("activate", self.close_app, "Close App")
-        # Show the menu items
-        open_item.show()
-        close_item.show()
-
-        #Popup the menu
-        menu.popup(None, None, None, event_button, event_time)
-
-    def on_right_click(self, data, event_button, event_time):
-
-        self.make_menu(event_button, event_time)
 
     def run(self):
 
         gobject.threads_init()
-        icon = gtk.status_icon_new_from_file('../media/gravatar.png')
-        icon.connect('popup-menu', self.on_right_click)
+
+        ind = appindicator.Indicator("linux-gravatar",
+                                     "indicator-messages",
+                                     appindicator.CATEGORY_APPLICATION_STATUS)
+        ind.set_status(appindicator.STATUS_ACTIVE)
+        ind.set_icon(self.icon)
+
+        # create a menu
+        menu = gtk.Menu()
+
+        menu_items = gtk.MenuItem('Settings')
+        menu.append(menu_items)
+        menu_items.connect('activate', self.menu_settings)
+        menu_items.show()
+
+        menu_items = gtk.MenuItem('Close')
+        menu.append(menu_items)
+        menu_items.connect('activate', self.close_app)
+        menu_items.show()
+
+        ind.set_menu(menu)
+
         self.gravatar_object()
+
         gtk.main()

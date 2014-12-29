@@ -77,6 +77,4 @@ class Gravatar(threading.Thread):
                 print 'save image to hdd'
                 self.save_image(self.remote_img)
 
-
-
             time.sleep(float(self.check_time))
