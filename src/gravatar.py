@@ -50,6 +50,9 @@ class Gravatar(threading.Thread):
 
         self.settings = settings.GravatarSettings('Settings', self.location)
 
+        md5_image1 = 1
+        md5_image2 = 2
+
         while True:
             print 'compare_images()'
 
@@ -64,15 +67,16 @@ class Gravatar(threading.Thread):
                 md5_image1 = hashlib.md5(image_file.read()).hexdigest()
                 md5_image2 = hashlib.md5(self.remote_img).hexdigest()
                 print md5_image1 + ' : ' + md5_image2
+                image_file.close()
             else:
-                f = open(self.local_img, 'a')
-                f.write(self.remote_img)
-                f.close()
+                image_file = open(self.local_img, 'a')
+                image_file.write(self.remote_img)
+                image_file.close()
 
             if str(md5_image1) != str(md5_image2):
                 print 'save image to hdd'
                 self.save_image(self.remote_img)
 
-            image_file.close()
+
 
             time.sleep(float(self.check_time))
