@@ -2,6 +2,8 @@ linux-gravatar (testing only)
 ==============
 ---
 
+[![Build Status](https://travis-ci.org/jrosco/linux-gravatar.svg?branch=master)](https://travis-ci.org/jrosco/linux-gravatar)
+
 Intro
 -----
 Set your Linux profile picture using gravatar. 

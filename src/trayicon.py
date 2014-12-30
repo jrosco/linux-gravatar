@@ -30,6 +30,7 @@ class StartTrayIcon():
 
         print 'Settings %s' % item
         self.settings_window.set_title("Settings")
+        self.settings_window.set_position(gtk.WIN_POS_CENTER)
         self.settings_window.set_size_request(400, 200)
         self.settings_window.add(self.settings_box)
         self.settings_box.pack_start(self.email_value, True, True, 0)
