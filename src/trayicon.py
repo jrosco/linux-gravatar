@@ -15,7 +15,7 @@ class StartTrayIcon():
         self.settings_window = gtk.Window(gtk.WINDOW_TOPLEVEL)
         self.settings_box = gtk.HBox(False, 0)
         self.email_value = gtk.Entry()
-        self.icon = '../media/gravatar.png'
+        self.icon = 'media/gravatar.png'
 
     def gravatar_object(self):
 
@@ -36,7 +36,8 @@ class StartTrayIcon():
         self.email_value.show()
         self.settings_window.show()
 
-    def close_app(self, item):
+    @staticmethod
+    def close_app(item):
 
         print 'Close %s' % item
         gtk.main_quit()
