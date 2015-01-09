@@ -3,6 +3,8 @@
 import hashlib
 import urllib2
 import os
+import dbus
+import pwd
 import time
 import threading
 import settings
@@ -43,10 +45,24 @@ class Gravatar(threading.Thread):
         f.write(image)
         f.close()
 
+    def set_dbus_icon(self):
+
+        print 'set_dbus_icon()'
+
+        user_id = pwd.getpwuid(os.getuid()).pw_uid
+        icon_file = self.local_img
+
+        bus = dbus.SystemBus()
+
+        user_name = bus.get_object('org.freedesktop.Accounts', '/org/freedesktop/Accounts/User' + str(user_id))
+
+        properties_manager = dbus.Interface(user_name, dbus_interface='org.freedesktop.DBus.Properties')
+
+        properties_manager.SetIconFile(icon_file, dbus_interface='org.freedesktop.Accounts.User')
+
     def get_user_home_image(self):
 
         print 'get_user_home_image()'
-        #self.local_img= '/var/lib/AccountsService/icons/jrosco'
         home_path = os.path.expanduser('~')
         self.local_img = home_path + '/.face'
 
@@ -82,6 +98,7 @@ class Gravatar(threading.Thread):
                 if str(md5_image1) != str(md5_image2):
                     print 'save image to hdd'
                     self.save_image(self.remote_img)
+                    self.set_dbus_icon()
 
                 time.sleep(float(self.check_time))
 

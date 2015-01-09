@@ -15,6 +15,8 @@ class StartTrayIcon():
         self.settings_window = gtk.Window(gtk.WINDOW_TOPLEVEL)
         self.settings_box = gtk.HBox(False, 0)
         self.email_value = gtk.Entry()
+        self.apply_btn = gtk.Button(stock=gtk.STOCK_SAVE)
+        self.close_btn = gtk.Button(stock=gtk.STOCK_QUIT)
         self.icon = 'media/gravatar.png'
 
     def gravatar_object(self):
@@ -34,7 +36,13 @@ class StartTrayIcon():
         self.settings_window.set_size_request(400, 200)
         self.settings_window.add(self.settings_box)
         self.settings_box.pack_start(self.email_value, True, True, 0)
+        self.settings_box.pack_start(self.apply_btn)
+        self.settings_box.pack_start(self.close_btn)
+        self.close_btn.connect('activate', self.close_app)
+        self.settings_box.show()
         self.email_value.show()
+        self.apply_btn.show()
+        self.close_btn.show()
         self.settings_window.show()
 
     @staticmethod
