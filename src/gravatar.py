@@ -52,13 +52,29 @@ class Gravatar(threading.Thread):
         user_id = pwd.getpwuid(os.getuid()).pw_uid
         icon_file = self.local_img
 
-        bus = dbus.SystemBus()
+        bus_name = 'org.freedesktop.Accounts'
+        object_path = '/org/freedesktop/Accounts/User'
+        interface_name = 'org.freedesktop.Accounts.User'
 
-        user_name = bus.get_object('org.freedesktop.Accounts', '/org/freedesktop/Accounts/User' + str(user_id))
+        session_bus = dbus.SystemBus()
 
+        user_name = session_bus.get_object(bus_name, object_path + str(user_id))
         properties_manager = dbus.Interface(user_name, dbus_interface='org.freedesktop.DBus.Properties')
+        properties_manager.SetIconFile(icon_file, dbus_interface=interface_name)
 
-        properties_manager.SetIconFile(icon_file, dbus_interface='org.freedesktop.Accounts.User')
+        self.notify(summary='linux-gravatar', body='<u>Added a new gravatar</u>')
+
+    @staticmethod
+    def notify(summary, body='', app_name='', app_icon='', timeout=-1, actions=[], hints=[], replaces_id=0):
+
+        bus_name = 'org.freedesktop.Notifications'
+        object_path = '/org/freedesktop/Notifications'
+        interface_name = bus_name
+
+        session_bus = dbus.SessionBus()
+        obj = session_bus.get_object(bus_name, object_path)
+        interface = dbus.Interface(obj, interface_name)
+        interface.Notify(app_name, replaces_id, app_icon, summary, body, actions, hints, timeout)
 
     def get_user_home_image(self):
 
