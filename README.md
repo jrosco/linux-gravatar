@@ -1,4 +1,4 @@
-linux-gravatar (testing only)
+linux-gravatar
 ==============
 ---
 
@@ -45,3 +45,6 @@ check = "The amount of time in seconds to scrape the gravatar url for your avata
 startup = "Not currently used"
 
 **N.B: You need to run the application first before apply the settings, as the application creates the settings file after it is ran.**
+
+**N.B: The settings GUI is still been worked on, for now setup the settings via vi ~/.gravatar_settings.cfg**
+
