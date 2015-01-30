@@ -10,6 +10,6 @@ setup(name='linux-gravatar',
       url='http://jrosco.github.io/linux-gravatar/',
       license='GPL',
       package_dir={'linux-gravatar': 'src'},
-      package_data={'linux-gravatar': ['media/*.png']},
+      data_files=[('/usr/share/icons', ['src/media/gravatar.png'])],
       packages=['linux-gravatar'],
       )

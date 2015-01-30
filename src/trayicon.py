@@ -17,7 +17,7 @@ class StartTrayIcon():
         self.email_value = gtk.Entry()
         self.apply_btn = gtk.Button(stock=gtk.STOCK_SAVE)
         self.close_btn = gtk.Button(stock=gtk.STOCK_QUIT)
-        self.icon = 'media/gravatar.png'
+        self.icon = '/usr/share/icons/gravatar.png'
 
     def gravatar_object(self):
 
