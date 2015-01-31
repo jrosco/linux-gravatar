@@ -29,7 +29,7 @@ cd linux-gravatar; sudo python setup.py install
 **Run application:**
 
 <code>
-python -m linux-gravatar
+/usr/bin/linux-gravatar
 </code>
 
 **Setup your settings:**
