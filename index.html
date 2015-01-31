@@ -40,7 +40,7 @@
 
 <p>Set your Linux profile picture using gravatar. </p>
 
-<p><em>Version Alpha 0.1.0</em></p>
+<p><em>Version Alpha 0.1.1</em></p>
 
 <p><strong>N.B: Only tested on Mint 17 and Ubuntu 14.04</strong></p>
 
@@ -67,19 +67,26 @@ python -m linux-gravatar
 
 <p><strong>Setup your settings:</strong></p>
 
-<p><code>
-vi ~/.gravatar_settings.cfg
-</code></p>
+<ul>
+<li><p>Click on the linux-gravatar trayicon <img alt="(img_logo)"></p></li>
+<li><p>Enter your email address used to grab the avatar and set the check time (number of minutes between scans)</p></li>
+<li><p>Select Apply</p></li>
+</ul>
 
 <p><strong>Setting values explained:</strong></p>
 
-<p>email = "The email address used to get your avatar"<br>
+<p>The settings file can be found in your home directory 
+<code>
+~/.gravatar_settings.cfg
+</code></p>
+
+<pre>
+email = "The email address used to get your avatar"<br>
 check = "The amount of time in seconds to scrape the gravatar url for your avatar"<br>
-startup = "Not currently used"</p>
+startup = "Not currently used"
+</pre>
 
 <p><strong>N.B: You need to run the application first before apply the settings, as the application creates the settings file after it is ran.</strong></p>
-
-<p><strong>N.B: The settings GUI is still been worked on, for now setup the settings via vi ~/.gravatar_settings.cfg</strong></p>
         </section>
 
         <aside id="sidebar">
