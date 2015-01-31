@@ -56,7 +56,7 @@ class GravatarSettings:
         config = ConfigParser.ConfigParser()
         config.add_section('Settings')
         config.set('Settings', 'email', None)
-        config.set('Settings', 'check', 300)
+        config.set('Settings', 'check', 60.0)
         config.set('Settings', 'startup', False)
         config.write(cfgfile)
         cfgfile.close()

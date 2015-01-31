@@ -18,7 +18,8 @@ class Gravatar(threading.Thread):
         self.email_addr = None
         self.remote_img = None
         self.local_img = None
-        self.check_time = 300
+        self.check_time = 60.0
+        self.stop_thread = False
         self.settings = None
         self.location = settings.settings_location()
 
@@ -91,7 +92,15 @@ class Gravatar(threading.Thread):
 
         while True:
 
-            print 'compare_images()'
+            print 'compare_images(%s)' % threading.currentThread()
+
+            # print threading.enumerate()[0]
+            #
+            # if threading.activeCount() > 2:
+            #     if threading.enumerate()[0]:
+            #
+            #         break
+            #     #self.stop_thread = True
 
             try:
                 self.email_addr = self.settings.read_config('email')
@@ -116,7 +125,8 @@ class Gravatar(threading.Thread):
                     self.save_image(self.remote_img)
                     self.set_dbus_icon()
 
-                time.sleep(float(self.check_time))
+                #time.sleep(float(self.check_time))
+                time.sleep(float(self.check_time) * 60)
 
             except Exception, e:
                 print e

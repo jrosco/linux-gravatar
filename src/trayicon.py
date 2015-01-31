@@ -1,9 +1,13 @@
 #!/usr/bin/env python
 
+import pygtk
+pygtk.require('2.0')
 import gobject
 import gtk
+import gtk.glade
 import appindicator
 import gravatar
+import settings
 
 
 class StartTrayIcon():
@@ -12,11 +16,6 @@ class StartTrayIcon():
 
         self.gobj = 0
         self.gravatar = gravatar.Gravatar()
-        self.settings_window = gtk.Window(gtk.WINDOW_TOPLEVEL)
-        self.settings_box = gtk.HBox(False, 0)
-        self.email_value = gtk.Entry()
-        self.apply_btn = gtk.Button(stock=gtk.STOCK_SAVE)
-        self.close_btn = gtk.Button(stock=gtk.STOCK_QUIT)
         self.icon = '/usr/share/icons/gravatar.png'
 
     def gravatar_object(self):
@@ -25,30 +24,27 @@ class StartTrayIcon():
 
     def start_gravatar(self):
 
+        print 'called start_gravatar(%s)' % self.gravatar
         self.gravatar.setDaemon(True)
         self.gravatar.start()
 
+    def refresh_gravatar(self):
+
+        print 'called refresh_gravatar(%s)' % self.gravatar
+
+        if not self.gravatar.is_alive():
+            print 'Thread Refresher'
+            self.start_gravatar()
+
     def menu_settings(self, item):
 
-        print 'Settings %s' % item
-        self.settings_window.set_title("Settings")
-        self.settings_window.set_position(gtk.WIN_POS_CENTER)
-        self.settings_window.set_size_request(400, 200)
-        self.settings_window.add(self.settings_box)
-        self.settings_box.pack_start(self.email_value, True, True, 0)
-        self.settings_box.pack_start(self.apply_btn)
-        self.settings_box.pack_start(self.close_btn)
-        self.close_btn.connect('activate', self.close_app)
-        self.settings_box.show()
-        self.email_value.show()
-        self.apply_btn.show()
-        self.close_btn.show()
-        self.settings_window.show()
+        print 'called menu_settings() %s' % item
+        SettingsDialog().run_dialog()
 
     @staticmethod
     def close_app(item):
 
-        print 'Close %s' % item
+        print 'called close_app() %s' % item
         gtk.main_quit()
 
     def run(self):
@@ -79,3 +75,46 @@ class StartTrayIcon():
         self.gravatar_object()
 
         gtk.main()
+
+
+class SettingsDialog(StartTrayIcon):
+
+    def __init__(self):
+
+        StartTrayIcon.__init__(self)
+
+        """ Settings GUI Configs"""
+        print 'called SettingsDialog()'
+        #self.builder_file = "../gui/settings_win.glade"
+        self.builder_file = "/usr/share/linux-gravatar/settings_win.glade"
+        self.builder = gtk.Builder()
+        self.builder.add_from_file(self.builder_file)
+        self.builder.connect_signals(self)
+        self.settings_dialog = self.builder.get_object('settings')
+        self.email_txt = self.builder.get_object('email_txt')
+        self.check_int = self.builder.get_object('check_int')
+
+        self.config_values = settings.GravatarSettings('Settings', settings.settings_location())
+        self.email_value = self.config_values.read_config('email')
+        self.email_txt.set_text(self.email_value)
+        self.check_value = float(self.config_values.read_config('check'))
+        self.check_int.set_value(self.check_value)
+
+    def apply_settings(self, widget):
+
+        print 'called apply_settings()'
+        self.config_values.save_to_config('email', self.email_txt.get_text())
+        self.config_values.save_to_config('check', self.check_int.get_value())
+        self.settings_dialog.destroy()
+        #print self.gravatar
+        self.refresh_gravatar()
+
+    def close_settings_win(self, widget):
+
+        print 'called close_settings() %s' % widget
+        self.settings_dialog.destroy()
+
+    def run_dialog(self):
+
+        print 'called run_dialog()'
+        self.settings_dialog.show_all()
