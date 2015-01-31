@@ -10,7 +10,7 @@ Set your Linux profile picture using gravatar.
 
 *Version Alpha 0.1.1*
 
-**N.B: Only tested on Mint 17 and Ubuntu 14.04**
+**N.B:** *Only tested on Mint 17 and Ubuntu 14.04*
 
 Build/Install/Setup/Run
 -----
@@ -31,6 +31,10 @@ cd linux-gravatar; sudo python setup.py install
 <code>
 /usr/bin/linux-gravatar
 </code>
+ 
+OR search in your **start menu** (Should be under category **"Other"**)
+
+**N.B:** *Running from commandline will display debugging messages at the moment*
 
 **Setup your settings:**
 
@@ -60,4 +64,3 @@ check = "The amount of time in seconds to scrape the gravatar url for your avata
 startup = "Not currently used"
 </pre>
 
-**N.B: You need to run the application first before apply the settings, as the application creates the settings file after it is ran.**

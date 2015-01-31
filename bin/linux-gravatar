@@ -1,4 +1,5 @@
 #!/bin/bash
 
-#
-python -m linux-gravatar
+PYTHON_EXE=$(which python)
+
+$PYTHON_EXE -m linux-gravatar
