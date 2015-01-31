@@ -34,11 +34,17 @@ cd linux-gravatar; sudo python setup.py install
 
 **Setup your settings:**
 
-* Click on the linux-gravatar trayicon ![(img_logo)](https://raw.githubusercontent.com/jrosco/linux-gravatar/master/gui/gravatar.png)
+![(img_logo)](https://raw.githubusercontent.com/jrosco/linux-gravatar/master/gui/gravatar.png)
+
+* Click on the linux-gravatar in your trayicon (example shown above)
 
 * Enter your email address used to grab the avatar and set the check time (number of minutes between scans)
 
 * Select Apply
+
+**Example:**
+
+![screenshot](http://i58.tinypic.com/2nr6l2.png)
 
 
 **Setting values explained:**
