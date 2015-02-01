@@ -8,7 +8,7 @@ import gtk.glade
 import appindicator
 import gravatar
 import settings
-from src import _version as version
+import _version as version
 
 
 class StartTrayIcon():
@@ -141,8 +141,8 @@ class AboutDialog(StartTrayIcon):
 
         """ About GUI Configs"""
         print 'called AboutDialog()'
-        self.builder_file = "../gui/about_win.glade"
-        #self.builder_file = "/usr/share/linux-gravatar/about_win.glade"
+        #self.builder_file = "../gui/about_win.glade"
+        self.builder_file = "/usr/share/linux-gravatar/about_win.glade"
         self.builder = gtk.Builder()
         self.builder.add_from_file(self.builder_file)
         self.builder.connect_signals(self)
@@ -164,5 +164,3 @@ class AboutDialog(StartTrayIcon):
 
         print 'called run_dialog()'
         self.about_dialog.show_all()
-
-
