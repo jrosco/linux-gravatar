@@ -8,6 +8,7 @@ import gtk.glade
 import appindicator
 import gravatar
 import settings
+import _version as version
 
 
 class StartTrayIcon():
@@ -36,10 +37,17 @@ class StartTrayIcon():
             print 'Thread Refresher'
             self.start_gravatar()
 
-    def menu_settings(self, item):
+    @staticmethod
+    def menu_settings(item):
 
         print 'called menu_settings() %s' % item
         SettingsDialog().run_dialog()
+
+    @staticmethod
+    def about(item):
+
+        print 'called about() %s' % item
+        AboutDialog().run_dialog()
 
     @staticmethod
     def close_app(item):
@@ -63,6 +71,11 @@ class StartTrayIcon():
         menu_items = gtk.MenuItem('Settings')
         menu.append(menu_items)
         menu_items.connect('activate', self.menu_settings)
+        menu_items.show()
+
+        menu_items = gtk.MenuItem('About')
+        menu.append(menu_items)
+        menu_items.connect('activate', self.about)
         menu_items.show()
 
         menu_items = gtk.MenuItem('Close')
@@ -118,3 +131,38 @@ class SettingsDialog(StartTrayIcon):
 
         print 'called run_dialog()'
         self.settings_dialog.show_all()
+
+
+class AboutDialog(StartTrayIcon):
+
+    def __init__(self):
+
+        StartTrayIcon.__init__(self)
+
+        """ About GUI Configs"""
+        print 'called AboutDialog()'
+        #self.builder_file = "../gui/about_win.glade"
+        self.builder_file = "/usr/share/linux-gravatar/about_win.glade"
+        self.builder = gtk.Builder()
+        self.builder.add_from_file(self.builder_file)
+        self.builder.connect_signals(self)
+        self.about_dialog = self.builder.get_object('about_dialog')
+
+    def close_about_win(self, widget):
+
+        print 'called about_dialog_win() %s' % widget
+        self.about_dialog.destroy()
+
+    @staticmethod
+    def open_homepage(widget):
+
+        print 'called open_project_url()'
+        import webbrowser
+        webbrowser.open_new_tab(version.__website__)
+
+    def run_dialog(self):
+
+        print 'called run_dialog()'
+        self.about_dialog.show_all()
+
+
