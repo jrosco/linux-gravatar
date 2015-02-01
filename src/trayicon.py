@@ -18,6 +18,10 @@ class StartTrayIcon():
         self.gobj = 0
         self.gravatar = gravatar.Gravatar()
         self.icon = '/usr/share/icons/gravatar.png'
+        self.setting_menu_icon = '/usr/share/linux-gravatar/settings_menu_icon.png'
+        self.about_menu_icon = '/usr/share/linux-gravatar/about_menu_icon.png'
+        self.close_menu_icon = '/usr/share/linux-gravatar/close_menu_icon.png'
+        self.profile_img = '/home/jrosco/.face'
 
     def gravatar_object(self):
 
@@ -68,19 +72,45 @@ class StartTrayIcon():
         # create a menu
         menu = gtk.Menu()
 
-        menu_items = gtk.MenuItem('Settings')
-        menu.append(menu_items)
+        """ Testing profile pic in menu """
+        # profile_icon = gtk.Image()
+        # profile_icon.set_from_file(self.profile_img)
+        # menu_items = gtk.ImageMenuItem('joel.cumberland@insp.com.au')
+        # #menu_items.connect('activate', self.menu_settings)
+        # menu_items.set_image(profile_icon)
+        # menu.append(menu_items)
+        # menu_items.show()
+        #
+        # sep = gtk.SeparatorMenuItem()
+        # menu.append(sep)
+        # sep.show()
+
+        setting_icon = gtk.Image()
+        setting_icon.set_from_file(self.setting_menu_icon)
+        menu_items = gtk.ImageMenuItem('Settings')
         menu_items.connect('activate', self.menu_settings)
+        menu_items.set_image(setting_icon)
+        menu.append(menu_items)
         menu_items.show()
 
-        menu_items = gtk.MenuItem('About')
-        menu.append(menu_items)
-        menu_items.connect('activate', self.about)
-        menu_items.show()
+        sep = gtk.SeparatorMenuItem()
+        menu.append(sep)
+        sep.show()
 
-        menu_items = gtk.MenuItem('Close')
-        menu.append(menu_items)
+        close_icon = gtk.Image()
+        close_icon.set_from_file(self.close_menu_icon)
+        menu_items = gtk.ImageMenuItem('Close')
         menu_items.connect('activate', self.close_app)
+        menu_items.set_image(close_icon)
+        menu.append(menu_items)
+        menu_items.show()
+
+        about_icon = gtk.Image()
+        about_icon.set_from_file(self.about_menu_icon)
+        menu_items = gtk.ImageMenuItem('About')
+        menu_items.connect('activate', self.about)
+        menu_items.set_image(about_icon)
+        menu.append(menu_items)
         menu_items.show()
 
         ind.set_menu(menu)
@@ -154,7 +184,7 @@ class AboutDialog(StartTrayIcon):
         self.about_dialog.destroy()
 
     @staticmethod
-    def open_homepage(widget):
+    def open_homepage():
 
         print 'called open_project_url()'
         import webbrowser

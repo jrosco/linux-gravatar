@@ -14,6 +14,7 @@
     <property name="border_width">5</property>
     <property name="title" translatable="yes">Settings</property>
     <property name="window_position">center</property>
+    <property name="icon">gravatar.png</property>
     <property name="type_hint">dialog</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="MainWindow">
