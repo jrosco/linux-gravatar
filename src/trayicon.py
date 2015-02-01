@@ -164,5 +164,3 @@ class AboutDialog(StartTrayIcon):
 
         print 'called run_dialog()'
         self.about_dialog.show_all()
-
-
