@@ -9,6 +9,7 @@ import appindicator
 import gravatar
 import settings
 import _version as version
+import logging
 import os
 import sys
 
@@ -19,6 +20,7 @@ class StartTrayIcon():
 
         self.gobj = 0
         self.gravatar = gravatar.Gravatar()
+        logging.basicConfig(level=logging.DEBUG)
         self.icon = '/usr/share/icons/gravatar.png'
         self.setting_menu_icon = '/usr/share/linux-gravatar/settings_menu_icon.png'
         self.refresh_menu_icon = '/usr/share/linux-gravatar/refresh_menu_icon.png'
@@ -26,61 +28,85 @@ class StartTrayIcon():
         self.close_menu_icon = '/usr/share/linux-gravatar/close_menu_icon.png'
         self.profile_img = '/home/jrosco/.face'
 
+        """ Testing new popup menu"""
+        self.builder_file = "../gui/menu_popup_test.glade"
+        self.builder = gtk.Builder()
+        self.builder.add_from_file(self.builder_file)
+        self.builder.connect_signals(self)
+        self.popup_dialog = self.builder.get_object('window1')
+
     def gravatar_object(self):
 
         self.gobj = gobject.timeout_add(0, self.start_gravatar)
 
     def start_gravatar(self):
 
-        print 'called start_gravatar(%s)' % self.gravatar
+        logging.debug('called start_gravatar(%s)' % self.gravatar)
         self.gravatar.setDaemon(True)
         self.gravatar.start()
 
     def refresh_gravatar(self):
 
-        print 'called refresh_gravatar(%s)' % self.gravatar
+        logging.debug('called refresh_gravatar(%s)' % self.gravatar)
 
         if not self.gravatar.is_alive():
-            print 'Thread Refresher'
+            logging.debug('Thread Refresher')
             self.start_gravatar()
 
     @staticmethod
     def menu_settings(item):
 
-        print 'called menu_settings() %s' % item
+        logging.debug('called menu_settings() %s' % item)
         SettingsDialog().run_dialog()
 
     @staticmethod
     def refresh(item):
 
-        print 'called refresh() %s' % item
+        logging.debug('called refresh() %s' % item)
         """Restarts the current program.
         Note: this function does not return. Any cleanup action (like
         saving data) must be done before calling this function."""
-        python = sys.executable
-        os.execl(python, python, * sys.argv)
+        if gravatar.Gravatar().main():
+            python = sys.executable
+            os.execl(python, python, * sys.argv)
+
+    @staticmethod
+    def menu_open_profile(item):
+
+        logging.debug('called menu_open_profile(%s)' % item)
+
+        try:
+            import webbrowser
+            #TODO : add this to settings class
+            webbrowser.open_new_tab('http://gravatar.com/profile/jr0sco')
+        except Exception, e:
+            logging.error('open profile error: %e' % e)
 
     @staticmethod
     def about(item):
 
-        print 'called about() %s' % item
+        logging.debug('called about() %s' % item)
         AboutDialog().run_dialog()
 
     @staticmethod
     def close_app(item):
 
-        print 'called close_app() %s' % item
+        logging.debug('called close_app() %s' % item)
         gtk.main_quit()
 
     def run(self):
 
+        #gtk.rc_parse('../gui/gtkrc')
+
         gobject.threads_init()
 
         ind = appindicator.Indicator("linux-gravatar",
-                                     "indicator-messages",
+                                     self.icon,
                                      appindicator.CATEGORY_APPLICATION_STATUS)
         ind.set_status(appindicator.STATUS_ACTIVE)
-        ind.set_icon(self.icon)
+
+        """ TESTING !!!!"""
+        self.popup_dialog.show_all()
 
         # create a menu
         menu = gtk.Menu()
@@ -89,9 +115,15 @@ class StartTrayIcon():
         profile_icon = gtk.Image()
         profile_icon.set_from_file(self.profile_img)
         menu_items = gtk.ImageMenuItem('CURRENT PROFILE')
-        #menu_items.connect('activate', self.menu_settings)
+        menu_items.connect('activate', self.menu_open_profile)
         menu_items.set_image(profile_icon)
         menu.append(menu_items)
+
+        """ Set Menu Color"""
+        #style = menu_items.get_style().copy()
+        #style.bg[gtk.STATE_NORMAL] = menu_items.get_colormap().alloc_color(0x0000, 0x0000, 0x0000)
+        #menu_items.set_style(style)
+
         menu_items.show()
 
         sep = gtk.SeparatorMenuItem()
@@ -148,7 +180,7 @@ class SettingsDialog(StartTrayIcon):
         StartTrayIcon.__init__(self)
 
         """ Settings GUI Configs"""
-        print 'called SettingsDialog()'
+        logging.debug('called SettingsDialog()')
         #self.builder_file = "../gui/settings_win.glade"
         self.builder_file = "/usr/share/linux-gravatar/settings_win.glade"
         self.builder = gtk.Builder()
@@ -166,7 +198,7 @@ class SettingsDialog(StartTrayIcon):
 
     def apply_settings(self, widget):
 
-        print 'called apply_settings()'
+        logging.debug('called apply_settings()')
         self.config_values.save_to_config('email', self.email_txt.get_text())
         self.config_values.save_to_config('check', self.check_int.get_value())
         self.settings_dialog.destroy()
@@ -175,12 +207,12 @@ class SettingsDialog(StartTrayIcon):
 
     def close_settings_win(self, widget):
 
-        print 'called close_settings() %s' % widget
+        logging.debug('called close_settings() %s' % widget)
         self.settings_dialog.destroy()
 
     def run_dialog(self):
 
-        print 'called run_dialog()'
+        logging.debug('called run_dialog()')
         self.settings_dialog.show_all()
 
 
@@ -191,7 +223,7 @@ class AboutDialog(StartTrayIcon):
         StartTrayIcon.__init__(self)
 
         """ About GUI Configs"""
-        print 'called AboutDialog()'
+        logging.debug('called AboutDialog()')
         #self.builder_file = "../gui/about_win.glade"
         self.builder_file = "/usr/share/linux-gravatar/about_win.glade"
         self.builder = gtk.Builder()
@@ -201,17 +233,20 @@ class AboutDialog(StartTrayIcon):
 
     def close_about_win(self, widget):
 
-        print 'called about_dialog_win() %s' % widget
+        logging.debug('called about_dialog_win() %s' % widget)
         self.about_dialog.destroy()
 
-    @staticmethod
-    def open_homepage():
+    def open_homepage(self, widget):
 
-        print 'called open_project_url()'
-        import webbrowser
-        webbrowser.open_new_tab(version.__website__)
+        logging.debug('called open_project_url(%s)' % widget)
+        try:
+            import webbrowser
+            webbrowser.open_new_tab(version.__website__)
+        except Exception, e:
+            logging.error('open project site error: %e' % e)
+        self.about_dialog.destroy()
 
     def run_dialog(self):
 
-        print 'called run_dialog()'
+        logging.debug('called run_dialog()')
         self.about_dialog.show_all()

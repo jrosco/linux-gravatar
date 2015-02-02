@@ -1,12 +1,14 @@
 import ConfigParser
 import os
 import platform
+import logging
 
 
 class GravatarSettings:
 
     def __init__(self, section, location):
 
+        logging.basicConfig(level=logging.DEBUG)
         self.section = section
         self.location = location
 
@@ -18,7 +20,7 @@ class GravatarSettings:
             config.read(self.location)
             value = config.get(self.section, key)
         except Exception, e:
-            print(e)
+            logging.error(e)
 
         return value
 
@@ -30,7 +32,7 @@ class GravatarSettings:
             config.read(self.location)
             bool_value = config.getboolean(self.section, key)
         except Exception, e:
-            print(e)
+            logging.error(e)
 
         return bool_value
 
@@ -47,7 +49,7 @@ class GravatarSettings:
             with open(self.location, 'wb') as cf:
                 config.write(cf)
         except Exception, e:
-            print(e)
+            logging.debug(e)
 
     @staticmethod
     def write_config_file(location):
@@ -75,7 +77,7 @@ def settings_location():
             home_path = os.path.expanduser('~')
         else:
             home_path = os.path.expanduser('~')
-            print 'Unknown OS'
+            logging.error('Unknown OS')
 
         file_path = home_path + '/.gravatar_settings.cfg'
 
@@ -84,7 +86,7 @@ def settings_location():
                 open(file_path, 'a').close()
                 GravatarSettings('Settings', file_path).write_config_file(file_path)
             except Exception, e:
-                print(e)
+                logging.error(e)
         else:
             pass
 
