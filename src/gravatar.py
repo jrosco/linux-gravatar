@@ -100,6 +100,7 @@ class Gravatar(threading.Thread):
         logging.debug('get_user_home_image()')
         home_path = os.path.expanduser('~')
         self.local_img = home_path + '/.face'
+        return self.local_img
 
     def main(self):
 

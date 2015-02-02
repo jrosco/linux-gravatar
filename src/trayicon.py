@@ -23,17 +23,11 @@ class StartTrayIcon():
         logging.basicConfig(level=logging.DEBUG)
         self.icon = '/usr/share/icons/gravatar.png'
         self.setting_menu_icon = '/usr/share/linux-gravatar/settings_menu_icon.png'
+        self.view_profile_menu_icon = '/usr/share/linux-gravatar/profile_menu_icon.png'
         self.refresh_menu_icon = '/usr/share/linux-gravatar/refresh_menu_icon.png'
         self.about_menu_icon = '/usr/share/linux-gravatar/about_menu_icon.png'
         self.close_menu_icon = '/usr/share/linux-gravatar/close_menu_icon.png'
-        self.profile_img = '/home/jrosco/.face'
-
-        """ Testing new popup menu"""
-        self.builder_file = "../gui/menu_popup_test.glade"
-        self.builder = gtk.Builder()
-        self.builder.add_from_file(self.builder_file)
-        self.builder.connect_signals(self)
-        self.popup_dialog = self.builder.get_object('window1')
+        self.profile_img = self.gravatar.get_user_home_image()
 
     def gravatar_object(self):
 
@@ -60,6 +54,12 @@ class StartTrayIcon():
         SettingsDialog().run_dialog()
 
     @staticmethod
+    def menu_profile_dialog(item):
+
+        logging.debug('called menu_profile_dialog() %s' % item)
+        ProfileDialog().run_dialog()
+
+    @staticmethod
     def refresh(item):
 
         logging.debug('called refresh() %s' % item)
@@ -77,8 +77,15 @@ class StartTrayIcon():
 
         try:
             import webbrowser
-            #TODO : add this to settings class
-            webbrowser.open_new_tab('http://gravatar.com/profile/jr0sco')
+            config_values = settings.GravatarSettings('Settings', settings.settings_location())
+            user_value = config_values.read_config('username')
+
+            if not user_value:
+                gravatar.Gravatar().notify(summary='linux-gravatar', body='<u> WARNING username not set.</u>')
+                webbrowser.open_new_tab('http://gravatar.com/')
+            else:
+                webbrowser.open_new_tab('http://gravatar.com/profile/' + user_value)
+
         except Exception, e:
             logging.error('open profile error: %e' % e)
 
@@ -105,9 +112,6 @@ class StartTrayIcon():
                                      appindicator.CATEGORY_APPLICATION_STATUS)
         ind.set_status(appindicator.STATUS_ACTIVE)
 
-        """ TESTING !!!!"""
-        self.popup_dialog.show_all()
-
         # create a menu
         menu = gtk.Menu()
 
@@ -115,7 +119,7 @@ class StartTrayIcon():
         profile_icon = gtk.Image()
         profile_icon.set_from_file(self.profile_img)
         menu_items = gtk.ImageMenuItem('CURRENT PROFILE')
-        menu_items.connect('activate', self.menu_open_profile)
+        menu_items.connect('activate', self.menu_profile_dialog)
         menu_items.set_image(profile_icon)
         menu.append(menu_items)
 
@@ -135,6 +139,14 @@ class StartTrayIcon():
         menu_items = gtk.ImageMenuItem('Settings')
         menu_items.connect('activate', self.menu_settings)
         menu_items.set_image(setting_icon)
+        menu.append(menu_items)
+        menu_items.show()
+
+        view_profile_icon = gtk.Image()
+        view_profile_icon.set_from_file(self.view_profile_menu_icon)
+        menu_items = gtk.ImageMenuItem('View Profile')
+        menu_items.connect('activate', self.menu_open_profile)
+        menu_items.set_image(view_profile_icon)
         menu.append(menu_items)
         menu_items.show()
 
@@ -181,16 +193,18 @@ class SettingsDialog(StartTrayIcon):
 
         """ Settings GUI Configs"""
         logging.debug('called SettingsDialog()')
-        #self.builder_file = "../gui/settings_win.glade"
         self.builder_file = "/usr/share/linux-gravatar/settings_win.glade"
         self.builder = gtk.Builder()
         self.builder.add_from_file(self.builder_file)
         self.builder.connect_signals(self)
         self.settings_dialog = self.builder.get_object('settings')
+        self.user_txt = self.builder.get_object('user_txt')
         self.email_txt = self.builder.get_object('email_txt')
         self.check_int = self.builder.get_object('check_int')
 
         self.config_values = settings.GravatarSettings('Settings', settings.settings_location())
+        self.user_value = self.config_values.read_config('username')
+        self.user_txt.set_text(self.user_value)
         self.email_value = self.config_values.read_config('email')
         self.email_txt.set_text(self.email_value)
         self.check_value = float(self.config_values.read_config('check'))
@@ -199,6 +213,7 @@ class SettingsDialog(StartTrayIcon):
     def apply_settings(self, widget):
 
         logging.debug('called apply_settings()')
+        self.config_values.save_to_config('username', self.user_txt.get_text())
         self.config_values.save_to_config('email', self.email_txt.get_text())
         self.config_values.save_to_config('check', self.check_int.get_value())
         self.settings_dialog.destroy()
@@ -224,7 +239,6 @@ class AboutDialog(StartTrayIcon):
 
         """ About GUI Configs"""
         logging.debug('called AboutDialog()')
-        #self.builder_file = "../gui/about_win.glade"
         self.builder_file = "/usr/share/linux-gravatar/about_win.glade"
         self.builder = gtk.Builder()
         self.builder.add_from_file(self.builder_file)
@@ -246,7 +260,70 @@ class AboutDialog(StartTrayIcon):
             logging.error('open project site error: %e' % e)
         self.about_dialog.destroy()
 
+    def open_my_profile(self, widget):
+
+        logging.debug('called open_my_profile(%s)' % widget)
+        try:
+            import webbrowser
+            webbrowser.open_new_tab(version.__profile__)
+        except Exception, e:
+            logging.error('open project site error: %e' % e)
+        self.about_dialog.destroy()
+
     def run_dialog(self):
 
         logging.debug('called run_dialog()')
         self.about_dialog.show_all()
+
+
+class ProfileDialog(StartTrayIcon):
+
+    def __init__(self):
+
+        StartTrayIcon.__init__(self)
+
+        """ Profile GUI Configs"""
+        logging.debug('called ProfileDialog()')
+        self.builder_file = "/usr/share/linux-gravatar/profile_win.glade"
+        self.builder = gtk.Builder()
+        self.builder.add_from_file(self.builder_file)
+        self.builder.connect_signals(self)
+        self.profile_dialog = self.builder.get_object('profile_dialog')
+        self.username_txt = self.builder.get_object('username_txt')
+        self.email_txt = self.builder.get_object('email_txt')
+        self.profile_img = self.builder.get_object('profile_img')
+
+        self.config_values = settings.GravatarSettings('Settings', settings.settings_location())
+        settings_username = self.config_values.read_config('username')
+        settings_email = self.config_values.read_config('email')
+
+        if settings_username:
+            self.username_txt.set_text(settings_username)
+
+        if settings_email:
+            self.email_txt.set_text(settings_email)
+
+        self.profile_img.set_from_file(self.gravatar.get_user_home_image())
+
+    def close_profile_win(self, widget):
+
+        logging.debug('called close_profile_win() %s' % widget)
+        self.profile_dialog.destroy()
+
+    def open_settings(self, widget):
+
+        logging.debug('called open_settings(%s)' % widget)
+        SettingsDialog().run_dialog()
+
+        self.profile_dialog.destroy()
+
+    def open_my_profile(self, widget):
+
+        logging.debug('called open_my_profile(%s)' % widget)
+        self.menu_open_profile(widget)
+        self.profile_dialog.destroy()
+
+    def run_dialog(self):
+
+        logging.debug('called run_dialog()')
+        self.profile_dialog.show_all()

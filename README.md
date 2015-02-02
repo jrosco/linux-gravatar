@@ -44,13 +44,15 @@ OR search in your **start menu** (Should be under category **"Other"**)
 
 * Click on the linux-gravatar in your trayicon (example shown above)
 
+* Enter your Gravatar username (not required). Only used to open your profile from the drop-down menu"
+
 * Enter your email address used to grab the avatar and set the check time (number of minutes between scans)
 
 * Select Apply
 
 **Example:**
 
-![screenshot](http://i58.tinypic.com/2nr6l2.png)
+![screenshot](http://i62.tinypic.com/11hb4sh.png)
 
 
 **Setting values explained:**
@@ -61,6 +63,7 @@ The settings file can be found in your home directory
 </code>
 
 <pre>
+username = "Your Gravatar username (not required). Only used to open your profile from drop-down menu"<br>
 email = "The email address used to get your avatar"<br>
 check = "The amount of time in seconds to scrape the gravatar url for your avatar"<br>
 startup = "Not currently used"
