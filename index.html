@@ -35,7 +35,7 @@
 
 <p><a href="https://travis-ci.org/jrosco/linux-gravatar"><img src="https://travis-ci.org/jrosco/linux-gravatar.svg?branch=master" alt="Build Status"></a>
 <a href="http://opensource.org/licenses/GPL-2.0"><img src="http://img.shields.io/badge/license-GPL-blue.svg?style=flat-square" alt="GPL License"></a>
-<img src="https://img.shields.io/badge/version-Alpha%200.1.1-orange.svg" alt="Version Status"></p>
+<img src="https://img.shields.io/badge/version-v1.0%20Beta-green.svg" alt="Version Status"></p>
 
 <h2>
 <a id="intro" class="anchor" href="#intro" aria-hidden="true"><span class="octicon octicon-link"></span></a>Intro</h2>
@@ -77,13 +77,14 @@ cd linux-gravatar; sudo python setup.py install
 
 <ul>
 <li><p>Click on the linux-gravatar in your trayicon (example shown above)</p></li>
+<li><p>Enter your Gravatar username (not required). Only used to open your profile from the drop-down menu"</p></li>
 <li><p>Enter your email address used to grab the avatar and set the check time (number of minutes between scans)</p></li>
 <li><p>Select Apply</p></li>
 </ul>
 
 <p><strong>Example:</strong></p>
 
-<p><img src="http://i58.tinypic.com/2nr6l2.png" alt="screenshot"></p>
+<p><img src="http://i62.tinypic.com/11hb4sh.png" alt="screenshot"></p>
 
 <p><strong>Setting values explained:</strong></p>
 
@@ -93,6 +94,7 @@ cd linux-gravatar; sudo python setup.py install
 </code></p>
 
 <pre>
+username = "Your Gravatar username (not required). Only used to open your profile from drop-down menu"<br>
 email = "The email address used to get your avatar"<br>
 check = "The amount of time in seconds to scrape the gravatar url for your avatar"<br>
 startup = "Not currently used"
