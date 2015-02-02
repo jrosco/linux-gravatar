@@ -8,9 +8,7 @@ linux-gravatar
 
 Intro
 -----
-Set your Linux profile picture using gravatar. 
-
-*Version Alpha 0.1.1*
+Set your Linux profile picture using gravatar.
 
 **N.B:** *Only tested on Mint 17 and Ubuntu 14.04*
 
