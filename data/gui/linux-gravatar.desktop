@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=linux-gravatar
 Comment=Set your Linux profile picture using gravatar. 
-Exec=/usr/bin/linux-gravatar
+Exec=/usr/local/bin/linux-gravatar
 Icon=gravatar.png
 Terminal=false
 Type=Application

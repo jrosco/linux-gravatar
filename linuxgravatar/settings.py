@@ -1,4 +1,11 @@
-import ConfigParser
+#!/usr/bin/env python
+
+""" Supports python2 and python3"""
+try:
+    import ConfigParser as configparser
+except ImportError:
+    import configparser
+
 import os
 import platform
 import logging
@@ -16,11 +23,13 @@ class GravatarSettings:
 
         value = None
         try:
-            config = ConfigParser.ConfigParser()
+            config = configparser.ConfigParser()
             config.read(self.location)
             value = config.get(self.section, key)
-        except Exception, e:
-            logging.error(e)
+        except:
+            logging.error('couldn\'t find correct setting details, '
+                          'creating new file')
+            self.write_config_file(self.location)
 
         return value
 
@@ -28,10 +37,10 @@ class GravatarSettings:
 
         bool_value = False
         try:
-            config = ConfigParser.ConfigParser()
+            config = configparser.ConfigParser()
             config.read(self.location)
             bool_value = config.getboolean(self.section, key)
-        except Exception, e:
+        except RuntimeError as e:
             logging.error(e)
 
         return bool_value
@@ -39,28 +48,29 @@ class GravatarSettings:
     def save_to_config(self, key, value):
 
         try:
-            config = ConfigParser.ConfigParser()
+            config = configparser.ConfigParser()
             config.read(self.location)
 
             if self.section not in config.sections():
                 config.add_section(self.section)
 
             config.set(self.section, key, value)
-            with open(self.location, 'wb') as cf:
+            with open(self.location.encode(), 'w') as cf:
                 config.write(cf)
-        except Exception, e:
+        except RuntimeError as e:
             logging.debug(e)
 
     @staticmethod
     def write_config_file(location):
 
-        cfgfile = open(location, 'w')
-        config = ConfigParser.ConfigParser()
+        cfgfile = open(location.encode(), 'w')
+        config = configparser.ConfigParser()
         config.add_section('Settings')
         config.set('Settings', 'username', '')
         config.set('Settings', 'email', '')
-        config.set('Settings', 'check', 60.0)
-        config.set('Settings', 'startup', False)
+        config.set('Settings', 'check', '60.0')
+        config.set('Settings', 'notifications', 'False')
+        config.set('Settings', 'startup', 'False')
         config.write(cfgfile)
         cfgfile.close()
 
@@ -86,7 +96,7 @@ def settings_location():
             try:
                 open(file_path, 'a').close()
                 GravatarSettings('Settings', file_path).write_config_file(file_path)
-            except Exception, e:
+            except RuntimeError as e:
                 logging.error(e)
         else:
             pass
