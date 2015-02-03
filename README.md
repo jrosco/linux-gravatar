@@ -14,6 +14,15 @@ Set your Linux profile picture using gravatar.
 
 Build/Install/Setup/Run
 -----
+
+**Dependencies**
+
+Ubuntu:
+
+<code>
+apt-get install python-glade2 python-appindicator
+</code>
+
 **Clone git repo:**
 
 <code>
