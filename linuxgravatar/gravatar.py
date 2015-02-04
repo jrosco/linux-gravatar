@@ -21,7 +21,7 @@ class Gravatar(threading.Thread):
     def __init__(self):
 
         threading.Thread.__init__(self)
-        logging.basicConfig(level=logging.INFO)
+        logging.basicConfig(level=logging.DEBUG)
         self.email_addr = None
         self.remote_img = None
         self.local_img = None
@@ -84,21 +84,22 @@ class Gravatar(threading.Thread):
         except dbus.DBusException as e:
             logging.error('DBUS Error: %s ' % e)
 
-    @staticmethod
-    def notify(summary, body='', app_name='', app_icon='', timeout=-1, actions=[], hints=[], replaces_id=0):
+    #TODO: Maybe move this to trayicon.py
+    def notify(self, summary, body='', app_name='', app_icon='', timeout=-1, actions=[], hints=[], replaces_id=0):
 
-        bus_name = 'org.freedesktop.Notifications'
-        object_path = '/org/freedesktop/Notifications'
-        interface_name = bus_name
+        if self.settings.read_config_bool('notifications') is True:
+            bus_name = 'org.freedesktop.Notifications'
+            object_path = '/org/freedesktop/Notifications'
+            interface_name = bus_name
 
-        try:
-            session_bus = dbus.SessionBus()
-            obj = session_bus.get_object(bus_name, object_path)
-            interface = dbus.Interface(obj, interface_name)
-            interface.Notify(app_name, replaces_id, app_icon, summary, body, actions, hints, timeout)
+            try:
+                session_bus = dbus.SessionBus()
+                obj = session_bus.get_object(bus_name, object_path)
+                interface = dbus.Interface(obj, interface_name)
+                interface.Notify(app_name, replaces_id, app_icon, summary, body, actions, hints, timeout)
 
-        except dbus.DBusException as e:
-            logging.error('DBUS Error: %s' % e)
+            except dbus.DBusException as e:
+                logging.error('DBUS Error: %s' % e)
 
     def get_user_home_image(self):
 

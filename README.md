@@ -4,7 +4,7 @@ linux-gravatar
 
 [![Build Status](https://travis-ci.org/jrosco/linux-gravatar.svg?branch=master)](https://travis-ci.org/jrosco/linux-gravatar)
 [![GPL License](http://img.shields.io/badge/license-GPL-blue.svg?style=flat-square)](http://opensource.org/licenses/GPL-2.0)
-![Version Status](https://img.shields.io/badge/version-v1.0%20Beta-green.svg)
+![Version Status](https://img.shields.io/badge/version-v1.1%20Beta-green.svg)
 
 Intro
 -----
@@ -61,9 +61,10 @@ The settings file can be found in your home directory
 </code>
 
 <pre>
-username = "Your Gravatar username (not required). Only used to open your profile from drop-down menu"<br>
-email = "The email address used to get your avatar"<br>
-check = "The amount of time in seconds to scrape the gravatar url for your avatar"<br>
-startup = "Not currently used"
+username = "Your Gravatar username (not required). Only used to open your profile from drop-down menu" (Default:None)<br>
+email = "The email address used to download your avatar" (Default:None)<br>
+check = "The amount of time in seconds to scrape the gravatar url for your avatar" (Default:60.0)<br>
+notifications = "Toggle between showing or not showing notification messages in the system tray (Default:True)"<br>
+startup = "Not currently used (Default:0)"
 </pre>
 

@@ -26,7 +26,7 @@ class StartTrayIcon():
 
         self.gobj = 0
         self.gravatar = gravatar.Gravatar()
-        logging.basicConfig(level=logging.INFO)
+        logging.basicConfig(level=logging.DEBUG)
         self.icon = '/usr/share/icons/gravatar.png'
         self.setting_menu_icon = '/usr/share/linux-gravatar/settings_menu_icon.png'
         self.view_profile_menu_icon = '/usr/share/linux-gravatar/profile_menu_icon.png'
@@ -34,6 +34,8 @@ class StartTrayIcon():
         self.about_menu_icon = '/usr/share/linux-gravatar/about_menu_icon.png'
         self.close_menu_icon = '/usr/share/linux-gravatar/close_menu_icon.png'
         self.profile_img = self.gravatar.get_user_home_image()
+        self.config_values = settings.GravatarSettings('Settings', settings.settings_location())
+        self.notify_enabled = self.config_values.read_config_bool('notifications')
 
     def gravatar_object(self):
 
@@ -45,6 +47,7 @@ class StartTrayIcon():
         self.gravatar.setDaemon(True)
         self.gravatar.start()
 
+    #TODO : Remove
     def refresh_gravatar(self):
 
         logging.debug('called refresh_gravatar(%s)' % self.gravatar)
@@ -52,6 +55,12 @@ class StartTrayIcon():
         if not self.gravatar.is_alive():
             logging.debug('Thread Refresher')
             self.start_gravatar()
+
+    def notify_action(self, widget, data=None):
+
+        logging.debug('called notify_action(%s)' % widget.get_active())
+        notify_enabled = widget.get_active()
+        self.config_values.save_to_config('notifications', str(notify_enabled))
 
     @staticmethod
     def menu_settings(item):
@@ -152,6 +161,17 @@ class StartTrayIcon():
         menu.append(sep)
         sep.show()
 
+        check = gtk.CheckMenuItem("Enable Notifications")
+        check.set_active(self.notify_enabled)
+        check.connect('toggled', self.notify_action, '')
+#        check.connect_object('activate', self.about_menu_icon) #TODO:Change this!!
+        menu.append(check)
+        check.show()
+
+        sep = gtk.SeparatorMenuItem()
+        menu.append(sep)
+        sep.show()
+
         setting_icon = gtk.Image()
         setting_icon.set_from_file(self.setting_menu_icon)
         menu_items = gtk.ImageMenuItem('Settings')
@@ -159,6 +179,7 @@ class StartTrayIcon():
         menu_items.set_image(setting_icon)
         menu.append(menu_items)
         menu_items.show()
+
 
         view_profile_icon = gtk.Image()
         view_profile_icon.set_from_file(self.view_profile_menu_icon)
@@ -216,11 +237,11 @@ class SettingsDialog(StartTrayIcon):
         self.builder.add_from_file(self.builder_file)
         self.builder.connect_signals(self)
         self.settings_dialog = self.builder.get_object('settings')
+
         self.user_txt = self.builder.get_object('user_txt')
         self.email_txt = self.builder.get_object('email_txt')
         self.check_int = self.builder.get_object('check_int')
 
-        self.config_values = settings.GravatarSettings('Settings', settings.settings_location())
         self.user_value = self.config_values.read_config('username')
         self.user_txt.set_text(self.user_value)
         self.email_value = self.config_values.read_config('email')
