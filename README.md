@@ -16,10 +16,15 @@ Set your Linux profile picture using gravatar.
 
 **N.B:** *Only tested on Mint 17 and Ubuntu 14.04, happy for people to try on other Distro and report back.*
 
-Issues
+Dependencies
 -----
 
-Please report any issues or request [here](https://github.com/jrosco/linux-gravatar/issues)
+**Ubuntu:**
+
+<code>
+apt-get install python-glade2 python-appindicator
+</code>
+
 
 Build/Install/Setup/Run
 -----
@@ -75,3 +80,7 @@ notifications = "Toggle between showing or not showing notification messages in 
 startup = "Not currently used (Default:0)"
 </pre>
 
+Issues
+-----
+
+Please report any issues or request [here](https://github.com/jrosco/linux-gravatar/issues)
