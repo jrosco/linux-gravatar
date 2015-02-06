@@ -11,7 +11,7 @@ Intro
 Set your Linux profile picture using gravatar.
 
 <code>
-**Support Python 2.7+ (including Python 3)**
+**Supports Python 2.7+ (including Python 3)**
 </code>
 
 **N.B:** *Only tested on Mint 17 and Ubuntu 14.04, happy for people to try on other Distro and report back.*
