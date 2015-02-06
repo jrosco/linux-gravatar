@@ -10,7 +10,16 @@ Intro
 -----
 Set your Linux profile picture using gravatar.
 
-**N.B:** *Only tested on Mint 17 and Ubuntu 14.04*
+<code>
+**Support Python 2.7+ (including Python 3)**
+</code>
+
+**N.B:** *Only tested on Mint 17 and Ubuntu 14.04, happy for people to try on other Distro and report back.*
+
+Issues
+-----
+
+Please report any issues or request [here](https://github.com/jrosco/linux-gravatar/issues)
 
 Build/Install/Setup/Run
 -----
@@ -29,12 +38,10 @@ cd linux-gravatar; sudo python setup.py install
 **Run application:**
 
 <code>
-/usr/bin/linux-gravatar
+/usr/local/bin/linux-gravatar
 </code>
  
 OR search in your **start menu** (Should be under category **"Other"**)
-
-**N.B:** *Running from commandline will display debugging messages at the moment*
 
 **Setup your settings:**
 
