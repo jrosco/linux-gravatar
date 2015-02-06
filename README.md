@@ -72,7 +72,7 @@ The settings file can be found in your home directory
 <pre>
 username = "Your Gravatar username (not required). Only used to open your profile from drop-down menu"<br>
 email = "The email address used to get your avatar"<br>
-check = "The amount of time in seconds to scrape the gravatar url for your avatar"<br>
+check = "The amount of time in minutes to scrape the gravatar url for your avatar"<br>
 startup = "Not currently used"
 </pre>
 
