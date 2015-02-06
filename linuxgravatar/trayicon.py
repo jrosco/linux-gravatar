@@ -47,15 +47,6 @@ class StartTrayIcon():
         self.gravatar.setDaemon(True)
         self.gravatar.start()
 
-    #TODO : Remove
-    def refresh_gravatar(self):
-
-        logging.debug('called refresh_gravatar(%s)' % self.gravatar)
-
-        if not self.gravatar.is_alive():
-            logging.debug('Thread Refresher')
-            self.start_gravatar()
-
     def notify_action(self, widget, data=None):
 
         logging.debug('called notify_action(%s)' % widget.get_active())
