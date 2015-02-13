@@ -50,7 +50,7 @@ OR search in your **start menu** (Should be under category **"Other"**)
 
 **Setup your settings:**
 
-![(img_logo)](https://raw.githubusercontent.com/jrosco/linux-gravatar/master/gui/gravatar.png)
+![(img_logo)](https://raw.githubusercontent.com/jrosco/linux-gravatar/master/data/gui/gravatar.png)
 
 * Click on the linux-gravatar in your trayicon (example shown above)
 
