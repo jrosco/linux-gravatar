@@ -15,7 +15,7 @@ class GravatarSettings:
 
     def __init__(self, section, location):
 
-        logging.basicConfig(level=logging.DEBUG)
+        logging.basicConfig(level=logging.INFO)
         self.section = section
         self.location = location
 

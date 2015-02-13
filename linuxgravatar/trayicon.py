@@ -26,7 +26,7 @@ class StartTrayIcon():
 
         self.gobj = 0
         self.gravatar = gravatar.Gravatar()
-        logging.basicConfig(level=logging.DEBUG)
+        logging.basicConfig(level=logging.INFO)
         self.icon = '/usr/share/icons/gravatar.png'
         self.setting_menu_icon = '/usr/share/linux-gravatar/settings_menu_icon.png'
         self.view_profile_menu_icon = '/usr/share/linux-gravatar/profile_menu_icon.png'

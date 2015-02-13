@@ -21,7 +21,7 @@ class Gravatar(threading.Thread):
     def __init__(self):
 
         threading.Thread.__init__(self)
-        logging.basicConfig(level=logging.DEBUG)
+        logging.basicConfig(level=logging.INFO)
         self.email_addr = None
         self.remote_img = None
         self.local_img = None
