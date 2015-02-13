@@ -35,14 +35,27 @@
 
 <p><a href="https://travis-ci.org/jrosco/linux-gravatar"><img src="https://travis-ci.org/jrosco/linux-gravatar.svg?branch=master" alt="Build Status"></a>
 <a href="http://opensource.org/licenses/GPL-2.0"><img src="http://img.shields.io/badge/license-GPL-blue.svg?style=flat-square" alt="GPL License"></a>
-<img src="https://img.shields.io/badge/version-v1.0%20Beta-green.svg" alt="Version Status"></p>
+<img src="https://img.shields.io/badge/version-v1.1%20Beta-green.svg" alt="Version Status"></p>
 
 <h2>
 <a id="intro" class="anchor" href="#intro" aria-hidden="true"><span class="octicon octicon-link"></span></a>Intro</h2>
 
 <p>Set your Linux profile picture using gravatar.</p>
 
-<p><strong>N.B:</strong> <em>Only tested on Mint 17 and Ubuntu 14.04</em></p>
+<p><code>
+<strong>Supports Python 2.7+ (including Python 3)</strong>
+</code></p>
+
+<p><strong>N.B:</strong> <em>Only tested on Mint 17 and Ubuntu 14.04, happy for people to try on other Distro and report back.</em></p>
+
+<h2>
+<a id="dependencies" class="anchor" href="#dependencies" aria-hidden="true"><span class="octicon octicon-link"></span></a>Dependencies</h2>
+
+<p><strong>Ubuntu:</strong></p>
+
+<p><code>
+apt-get install python-glade2 python-appindicator
+</code></p>
 
 <h2>
 <a id="buildinstallsetuprun" class="anchor" href="#buildinstallsetuprun" aria-hidden="true"><span class="octicon octicon-link"></span></a>Build/Install/Setup/Run</h2>
@@ -62,12 +75,10 @@ cd linux-gravatar; sudo python setup.py install
 <p><strong>Run application:</strong></p>
 
 <p><code>
-/usr/bin/linux-gravatar
+/usr/local/bin/linux-gravatar
 </code></p>
 
 <p>OR search in your <strong>start menu</strong> (Should be under category <strong>"Other"</strong>)</p>
-
-<p><strong>N.B:</strong> <em>Running from commandline will display debugging messages at the moment</em></p>
 
 <p><strong>Setup your settings:</strong></p>
 
@@ -92,11 +103,17 @@ cd linux-gravatar; sudo python setup.py install
 </code></p>
 
 <pre>
-username = "Your Gravatar username (not required). Only used to open your profile from drop-down menu"<br>
-email = "The email address used to get your avatar"<br>
-check = "The amount of time in seconds to scrape the gravatar url for your avatar"<br>
-startup = "Not currently used"
+username = "Your Gravatar username (not required). Only used to open your profile from drop-down menu" (Default:None)<br>
+email = "The email address used to download your avatar" (Default:None)<br>
+check = "The amount of time in seconds to scrape the gravatar url for your avatar" (Default:60.0)<br>
+notifications = "Toggle between showing or not showing notification messages in the system tray (Default:True)"<br>
+startup = "Not currently used (Default:0)"
 </pre>
+
+<h2>
+<a id="issues" class="anchor" href="#issues" aria-hidden="true"><span class="octicon octicon-link"></span></a>Issues</h2>
+
+<p>Please report any issues or request <a href="https://github.com/jrosco/linux-gravatar/issues">here</a></p>
         </section>
 
         <aside id="sidebar">
