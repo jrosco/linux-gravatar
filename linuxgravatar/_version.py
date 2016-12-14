@@ -1,4 +1,4 @@
-__author__ = 'jrosco'
+__author__ = 'Joel Cumberland'
 
 __email__ = 'joel_c@zoho.com'
 
@@ -8,7 +8,7 @@ __version__ = 'v1.1 Beta'
 
 __description__ = 'Set your Linux profile picture using gravatar.'
 
-__copyright__ = '2014-2015'
+__copyright__ = '2014-2017'
 
 __license__ = 'GPL v2'
 
