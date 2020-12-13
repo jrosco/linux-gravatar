@@ -4,7 +4,7 @@ __email__ = 'joel_c@zoho.com'
 
 __name__ = 'linux-gravatar'
 
-__version__ = 'v1.1 Beta'
+__version__ = '1.1.0'
 
 __description__ = 'Set your Linux profile picture using gravatar.'
 
