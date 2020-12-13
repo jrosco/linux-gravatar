@@ -1,6 +1,11 @@
 language: python
 python:
-- "3.8"
-- "2.7"
+  - "2.7"
+  - "3.8"
 
-script: sudo python setup.py install
+jobs:
+  include:
+  - unittest:
+    script: sudo python setup.py install
+    python: "3.8"
+    after_script: python test/unittest/test_gravatar.py
