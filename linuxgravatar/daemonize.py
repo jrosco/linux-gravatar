@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import threading
-import gravatar
+from . import gravatar
 
 
 class MyThread (threading.Thread):
@@ -12,9 +12,9 @@ class MyThread (threading.Thread):
 
     def run(self):
 
-        print "Starting " + self.name
+        print("Starting " + self.name)
         gravatar.Gravatar().start()
-        print "Exiting " + self.name
+        print("Exiting " + self.name)
 
 
 f = MyThread()

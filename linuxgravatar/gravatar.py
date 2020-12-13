@@ -1,13 +1,18 @@
 #!/usr/bin/env python
 
+""" Supports python2 and python3"""
+try:
+    from urllib.request import urlopen
+except ImportError:
+    from urllib import urlopen
+
 import hashlib
-import urllib2
 import os
 import dbus
 import pwd
 import time
 import threading
-import settings
+from . import settings
 import logging
 
 
@@ -33,14 +38,14 @@ class Gravatar(threading.Thread):
         logging.debug('get_url_image(email)')
 
         try:
+            email_m5d = hashlib.md5(self.email_addr.lower().encode()).hexdigest()
             logging.debug('connecting to gravatar site')
-            gravatar_url = "http://www.gravatar.com/avatar/" + hashlib.md5(self.email_addr.lower()).hexdigest()
-
-            response = urllib2.urlopen(gravatar_url)
+            gravatar_url = "http://www.gravatar.com/avatar/" + email_m5d
+            response = urlopen(gravatar_url)
             self.remote_img = response.read()
             logging.debug('got remote img from gravatar site')
 
-        except urllib2.URLError, e:
+        except RuntimeError as e:
             logging.error('URL Error: %s' % e)
 
     def save_image(self, image):
@@ -49,11 +54,11 @@ class Gravatar(threading.Thread):
         self.get_user_home_image()
 
         try:
-            f = open(self.local_img, 'wb')
+            f = open(str(self.local_img), 'wb')
             f.write(image)
             f.close()
 
-        except IOError, e:
+        except IOError as e:
             logging.error('IO Error: %s' % e)
 
     def set_dbus_icon(self):
@@ -76,24 +81,25 @@ class Gravatar(threading.Thread):
 
             self.notify(summary='linux-gravatar', body='<u>Added a new gravatar</u>')
 
-        except dbus.DBusException, e:
+        except dbus.DBusException as e:
             logging.error('DBUS Error: %s ' % e)
 
-    @staticmethod
-    def notify(summary, body='', app_name='', app_icon='', timeout=-1, actions=[], hints=[], replaces_id=0):
+    #TODO: Maybe move this to trayicon.py
+    def notify(self, summary, body='', app_name='', app_icon='', timeout=-1, actions=[], hints=[], replaces_id=0):
 
-        bus_name = 'org.freedesktop.Notifications'
-        object_path = '/org/freedesktop/Notifications'
-        interface_name = bus_name
+        if self.settings.read_config_bool('notifications') is True:
+            bus_name = 'org.freedesktop.Notifications'
+            object_path = '/org/freedesktop/Notifications'
+            interface_name = bus_name
 
-        try:
-            session_bus = dbus.SessionBus()
-            obj = session_bus.get_object(bus_name, object_path)
-            interface = dbus.Interface(obj, interface_name)
-            interface.Notify(app_name, replaces_id, app_icon, summary, body, actions, hints, timeout)
+            try:
+                session_bus = dbus.SessionBus()
+                obj = session_bus.get_object(bus_name, object_path)
+                interface = dbus.Interface(obj, interface_name)
+                interface.Notify(app_name, replaces_id, app_icon, summary, body, actions, hints, timeout)
 
-        except dbus.DBusException, e:
-            logging.error('DBUS Error: %s' % e)
+            except dbus.DBusException as e:
+                logging.error('DBUS Error: %s' % e)
 
     def get_user_home_image(self):
 
@@ -115,17 +121,17 @@ class Gravatar(threading.Thread):
                 self.get_user_home_image()
 
                 if os.path.isfile(self.local_img):
-                    image_file = open(self.local_img, 'r')
+                    image_file = open(str(self.local_img), 'rb')
                     md5_image1 = hashlib.md5(image_file.read()).hexdigest()
                     md5_image2 = hashlib.md5(self.remote_img).hexdigest()
                     logging.debug(md5_image1 + ' : ' + md5_image2)
                     image_file.close()
                 else:
                     try:
-                        image_file = open(self.local_img, 'a')
+                        image_file = open(str(self.local_img), 'a')
                         image_file.write(self.remote_img)
                         image_file.close()
-                    except IOError, e:
+                    except IOError as e:
                         logging.error('IOERROR: %s' % e)
 
                 if str(md5_image1) != str(md5_image2):
@@ -135,8 +141,8 @@ class Gravatar(threading.Thread):
 
                 return True
 
-        except Exception, e:
-            logging.error(e)
+        except RuntimeError as e:
+            logging.error('Main Error: %s' % e)
             return False
 
     def run(self):
