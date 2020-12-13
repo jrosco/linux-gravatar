@@ -84,5 +84,4 @@ The settings file can be found in your home directory
 ## Issues
 
 ---
-
 Please report any issues or request [here](https://github.com/jrosco/linux-gravatar/issues)
