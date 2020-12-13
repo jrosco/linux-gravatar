@@ -11,20 +11,19 @@
   - [Build/Install/Setup/Run](#buildinstallsetuprun)
   - [Settings](#settings)
   - [Issues](#issues)
-Intro
 
 ---
 Set your Linux profile picture using gravatar.
 
-**Supports Python 2.7+ adm Python 3**
+Supports Python 2.7+ adm Python 3
 
-**N.B:** *Only Ubuntu 20.04, happy for people to try on other Distro and report back.*
+**N.B** *Only Ubuntu 20.04, happy for people to try on other Distro and report back.*
 
 ## Dependencies
 
 ---
 
-**Ubuntu: (Python 2 only)**
+**Ubuntu: (Python 2 only):**
 
 ```bash
 apt-get install python-glade2 python-appindicator
