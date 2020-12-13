@@ -8,7 +8,9 @@ try:
     import gtk
     import gtk.glade
 except ImportError:
+    import gi
     #from gi import pygtkcompat
+    gi.require_version('Gtk', '3.0')
     from gi.repository import Gtk as gtk
     from gi.repository import GObject as gobject
 
@@ -121,6 +123,7 @@ class StartTrayIcon():
                                          appindicator.CATEGORY_APPLICATION_STATUS)
             ind.set_status(appindicator.STATUS_ACTIVE)
         except ImportError:
+            gi.require_version('AppIndicator3', '0.1')
             from gi.repository import AppIndicator3 as appindicator
             """ Python 3 Appindicator """
             ind = appindicator.Indicator.new_with_path(("linux-gravatar"),
