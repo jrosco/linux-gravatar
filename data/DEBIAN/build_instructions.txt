@@ -1,0 +1,12 @@
+Build source files:
+===========================================================
+Change to root directory and run
+python setup.py sdist
+===========================================================
+
+Build Deb and RPM:
+===========================================================
+Run build_deb.sh script found under root path
+===========================================================
+
+NB: May need to update file and directory locations

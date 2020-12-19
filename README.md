@@ -15,7 +15,7 @@
 ---
 Set your Linux profile picture using gravatar.
 
-Supports Python 2.7+ adm Python 3
+Supports Python 2.7+ and Python 3
 
 **N.B** *Only Ubuntu 20.04, happy for people to try on other Distro and report back.*
 

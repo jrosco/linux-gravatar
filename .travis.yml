@@ -1,6 +1,7 @@
 language: python
 python:
 - "3.8"
-- "2.7"
 
 script: sudo python setup.py install
+
+after_script: python test/unittest/test_gravatar.py
