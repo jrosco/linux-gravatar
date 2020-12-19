@@ -1,0 +1,8 @@
+title: linux-gravatar
+description: Set your Linux profile picture using gravatar
+google_analytics: UA-59178367-1
+show_downloads: true
+theme: jekyll-theme-architect
+
+gems:
+  - jekyll-mentions
