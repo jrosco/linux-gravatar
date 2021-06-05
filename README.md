@@ -4,7 +4,7 @@
 
 [![Build Status](https://travis-ci.org/jrosco/linux-gravatar.svg?branch=master)](https://travis-ci.org/jrosco/linux-gravatar)
 [![GPL License](http://img.shields.io/badge/license-GPL-blue.svg?style=flat-square)](http://opensource.org/licenses/GPL-2.0)
-![Version Status](https://img.shields.io/badge/version-1.1.0-green.svg)
+![Version Status](https://img.shields.io/badge/version-1.1.1-green.svg)
 
 - [linux-gravatar](#linux-gravatar)
   - [Dependencies](#dependencies)
@@ -15,7 +15,7 @@
 ---
 Set your Linux profile picture using gravatar.
 
-Supports Python 2.7+ adm Python 3
+Supports Python 2.7+ and Python 3
 
 **N.B** *Only Ubuntu 20.04, happy for people to try on other Distro and report back.*
 
@@ -27,6 +27,12 @@ Supports Python 2.7+ adm Python 3
 
 ```bash
 apt-get install python-glade2 python-appindicator
+```
+
+**Ubuntu: (Python 3 only):**
+
+```bash
+sudo apt install libappindicator3-dev
 ```
 
 ## Build/Install/Setup/Run
@@ -84,5 +90,4 @@ The settings file can be found in your home directory
 ## Issues
 
 ---
-
 Please report any issues or request [here](https://github.com/jrosco/linux-gravatar/issues)
