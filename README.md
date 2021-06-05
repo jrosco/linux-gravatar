@@ -29,6 +29,12 @@ Supports Python 2.7+ and Python 3
 apt-get install python-glade2 python-appindicator
 ```
 
+**Ubuntu: (Python 3 only):**
+
+```bash
+sudo apt install libappindicator3-dev
+```
+
 ## Build/Install/Setup/Run
 
 ---

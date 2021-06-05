@@ -13,7 +13,7 @@ sudo rm -rf ${dist_dir} || echo "${dist_dir} does not exist. skipping"
 sudo rm -rf ${build_dir} || echo "${build_dir} does not exist. skipping"
 
 # Build dist
-python setup.py bdist
+python3 setup.py bdist
 tar xvf ${dist_dir}/${app_name}-${build_number}.linux-${os_arch}.tar.gz -C ${dist_dir}
 
 # Copy Files
@@ -26,7 +26,7 @@ sudo dpkg-deb --build ${dist_dir}/
 # Rename DEB File
 mv dist.deb ${app_name}-${build_number}.linux-${os_arch}.deb
 
-# Build a RPM
+# Build a RPM (requires alien installed)
 sudo alien -r ${app_name}-${build_number}.linux-${os_arch}.deb
 
 # Move packages file
