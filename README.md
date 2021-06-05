@@ -4,7 +4,7 @@
 
 [![Build Status](https://travis-ci.org/jrosco/linux-gravatar.svg?branch=master)](https://travis-ci.org/jrosco/linux-gravatar)
 [![GPL License](http://img.shields.io/badge/license-GPL-blue.svg?style=flat-square)](http://opensource.org/licenses/GPL-2.0)
-![Version Status](https://img.shields.io/badge/version-1.1.0-green.svg)
+![Version Status](https://img.shields.io/badge/version-1.1.1-green.svg)
 
 - [linux-gravatar](#linux-gravatar)
   - [Dependencies](#dependencies)

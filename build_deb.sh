@@ -2,7 +2,7 @@
 
 # Set Build Directory
 app_name="linux-gravatar"
-build_number="1.1.0"
+build_number="1.1.1"
 dist_dir="dist"
 build_dir="build"
 package_dir="packages"
